@@ -1,0 +1,17 @@
+# Git
+.git
+.gitignore
+
+# Dependencies and compiled files
+node_modules
+dist
+
+# Logs
+npm-debug.log
+
+# Docker
+Dockerfile
+.dockerignore
+
+# Environment variables
+.env
