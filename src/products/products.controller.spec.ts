@@ -6,9 +6,7 @@ describe('ProductsController', () => {
   let controller: ProductsController;
   let service: ProductsService;
 
-  const mockProducts = [
-    { id: '1', name: 'Aceite de Coco Mock', price: 35000 },
-  ];
+  const mockProducts = [{ id: '1', name: 'Aceite de Coco Mock', price: 35000 }];
 
   const mockProductsService = {
     findAll: jest.fn().mockResolvedValue(mockProducts),
@@ -35,7 +33,7 @@ describe('ProductsController', () => {
 
   it('should return a products array', async () => {
     const result = await controller.getAllProducts();
-    
+
     expect(result).toEqual(mockProducts);
     expect(service.findAll).toHaveBeenCalled();
   });

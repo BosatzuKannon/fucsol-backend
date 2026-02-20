@@ -13,7 +13,9 @@ export class SupabaseService {
     const supabaseKey = this.configService.get<string>('SUPABASE_KEY');
 
     if (!supabaseUrl || !supabaseKey) {
-      this.logger.error('Supabase credentials are missing in environment variables.');
+      this.logger.error(
+        'Supabase credentials are missing in environment variables.',
+      );
       throw new Error('Missing Supabase credentials');
     }
 

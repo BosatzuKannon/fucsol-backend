@@ -7,8 +7,9 @@ import { ProductsModule } from './products/products.module';
 
 @Module({
   imports: [
-    ConfigModule.forRoot({ isGlobal: true }), 
-    SupabaseModule, ProductsModule
+    ConfigModule.forRoot({ isGlobal: true }),
+    SupabaseModule,
+    ProductsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

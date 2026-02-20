@@ -1,4 +1,8 @@
-import { Injectable, InternalServerErrorException, Logger } from '@nestjs/common';
+import {
+  Injectable,
+  InternalServerErrorException,
+  Logger,
+} from '@nestjs/common';
 import { SupabaseService } from '../supabase/supabase.service';
 
 @Injectable()
@@ -9,7 +13,7 @@ export class ProductsService {
 
   async findAll() {
     this.logger.log('Fetching all products from Supabase...');
-    
+
     const supabase = this.supabaseService.getClient();
 
     const { data, error } = await supabase
