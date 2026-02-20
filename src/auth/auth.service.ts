@@ -16,6 +16,7 @@ export class AuthService {
     const user = await this.usersService.findByEmail(email);
     
     if (user && (await bcrypt.compare(pass, user.password))) {
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const { password, ...result } = user;
       return result;
     }
@@ -23,7 +24,7 @@ export class AuthService {
     throw new UnauthorizedException('Correo o contraseña incorrectos');
   }
 
-  async login(user: any) {
+  login(user: any) {
     const payload = { email: user.email, sub: user.id, role: user.role };
     this.logger.log(`Usuario logueado exitosamente, generando JWT para: ${user.email}`);
     
