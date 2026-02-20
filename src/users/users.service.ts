@@ -1,4 +1,9 @@
-import { Injectable, InternalServerErrorException, NotFoundException, Logger } from '@nestjs/common';
+import {
+  Injectable,
+  InternalServerErrorException,
+  NotFoundException,
+  Logger,
+} from '@nestjs/common';
 import * as bcrypt from 'bcrypt';
 import { SupabaseService } from '../supabase/supabase.service';
 
@@ -31,15 +36,25 @@ export class UsersService {
 
       if (error) {
         // Registramos el error en la consola antes de lanzarlo
-        this.logger.error(`Error de Supabase al crear usuario: ${error.message}`, error.stack);
-        throw new InternalServerErrorException(`Error al crear usuario: ${error.message}`);
+        this.logger.error(
+          `Error de Supabase al crear usuario: ${error.message}`,
+          error.stack,
+        );
+        throw new InternalServerErrorException(
+          `Error al crear usuario: ${error.message}`,
+        );
       }
 
       this.logger.log(`Usuario creado exitosamente: ${data.email}`);
       return data;
     } catch (error) {
-      this.logger.error(`Fallo inesperado al crear usuario: ${error.message}`, error.stack);
-      throw new InternalServerErrorException('Error interno al crear el usuario');
+      this.logger.error(
+        `Fallo inesperado al crear usuario: ${error.message}`,
+        error.stack,
+      );
+      throw new InternalServerErrorException(
+        'Error interno al crear el usuario',
+      );
     }
   }
 
@@ -53,7 +68,9 @@ export class UsersService {
       .single();
 
     if (error && error.code !== 'PGRST116') {
-      this.logger.error(`Error buscando usuario por email (${email}): ${error.message}`);
+      this.logger.error(
+        `Error buscando usuario por email (${email}): ${error.message}`,
+      );
       throw new InternalServerErrorException(error.message);
     }
 
@@ -71,10 +88,14 @@ export class UsersService {
 
     if (error) {
       if (error.code === 'PGRST116') {
-        this.logger.warn(`Intento de buscar un usuario que no existe: ID ${id}`);
+        this.logger.warn(
+          `Intento de buscar un usuario que no existe: ID ${id}`,
+        );
         throw new NotFoundException('Usuario no encontrado');
       }
-      this.logger.error(`Error al buscar usuario por ID (${id}): ${error.message}`);
+      this.logger.error(
+        `Error al buscar usuario por ID (${id}): ${error.message}`,
+      );
       throw new InternalServerErrorException(error.message);
     }
 

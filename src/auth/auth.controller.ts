@@ -1,4 +1,11 @@
-import { Controller, Post, Body, HttpCode, HttpStatus, Logger } from '@nestjs/common';
+import {
+  Controller,
+  Post,
+  Body,
+  HttpCode,
+  HttpStatus,
+  Logger,
+} from '@nestjs/common';
 import { AuthService } from './auth.service';
 
 @Controller('auth')
@@ -17,9 +24,12 @@ export class AuthController {
   @HttpCode(HttpStatus.OK)
   async login(@Body() loginData: any) {
     this.logger.log(`Petición de login recibida para: ${loginData.email}`);
-    
-    const user = await this.authService.validateUser(loginData.email, loginData.password);
-    
+
+    const user = await this.authService.validateUser(
+      loginData.email,
+      loginData.password,
+    );
+
     return this.authService.login(user);
   }
 }

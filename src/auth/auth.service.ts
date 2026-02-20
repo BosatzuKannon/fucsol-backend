@@ -14,7 +14,7 @@ export class AuthService {
 
   async validateUser(email: string, pass: string): Promise<any> {
     const user = await this.usersService.findByEmail(email);
-    
+
     if (user && (await bcrypt.compare(pass, user.password))) {
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const { password, ...result } = user;
@@ -26,23 +26,25 @@ export class AuthService {
 
   login(user: any) {
     const payload = { email: user.email, sub: user.id, role: user.role };
-    this.logger.log(`Usuario logueado exitosamente, generando JWT para: ${user.email}`);
-    
+    this.logger.log(
+      `Usuario logueado exitosamente, generando JWT para: ${user.email}`,
+    );
+
     return {
       access_token: this.jwtService.sign(payload),
       user: {
         id: user.id,
         full_name: user.full_name,
         email: user.email,
-        role: user.role
-      }
+        role: user.role,
+      },
     };
   }
 
   async register(userData: any) {
     this.logger.log(`Registrando nuevo usuario: ${userData.email}`);
     const newUser = await this.usersService.create(userData);
-    
+
     return this.login(newUser);
   }
 }

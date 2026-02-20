@@ -11,7 +11,7 @@ import { JwtStrategy } from './strategies/jwt.strategy';
     UsersModule,
     PassportModule,
     JwtModule.register({
-      secret: process.env.JWT_SECRET || 'super_secreto_fucsol_mvp_2026', 
+      secret: process.env.JWT_SECRET || 'super_secreto_fucsol_mvp_2026',
       signOptions: { expiresIn: '30d' },
     }),
   ],
