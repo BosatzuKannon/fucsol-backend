@@ -35,7 +35,6 @@ export class UsersService {
         .single();
 
       if (error) {
-        // Registramos el error en la consola antes de lanzarlo
         this.logger.error(
           `Error de Supabase al crear usuario: ${error.message}`,
           error.stack,
@@ -63,7 +62,8 @@ export class UsersService {
 
     const { data, error } = await supabase
       .from('users')
-      .select('*')
+      // AQUÍ ESTÁ LA MAGIA: Trae todo del usuario y hace JOIN con addresses
+      .select('*, addresses(*)')
       .eq('email', email)
       .single();
 
@@ -82,7 +82,8 @@ export class UsersService {
 
     const { data, error } = await supabase
       .from('users')
-      .select('id, full_name, email, phone, role, created_at')
+      // Añado addresses(*) aquí también por si luego consultas el perfil por ID
+      .select('id, full_name, email, phone, role, created_at, addresses(*)')
       .eq('id', id)
       .single();
 

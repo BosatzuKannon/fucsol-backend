@@ -37,6 +37,9 @@ export class AuthService {
         full_name: user.full_name,
         email: user.email,
         role: user.role,
+        phone: user.phone,
+        points: user.points || 0,
+        addresses: user.addresses || [],
       },
     };
   }
@@ -45,6 +48,6 @@ export class AuthService {
     this.logger.log(`Registrando nuevo usuario: ${userData.email}`);
     const newUser = await this.usersService.create(userData);
 
-    return this.login(newUser);
+    return this.login({ ...newUser, addresses: [] });
   }
 }

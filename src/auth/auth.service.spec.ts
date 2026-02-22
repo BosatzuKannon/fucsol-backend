@@ -96,12 +96,15 @@ describe('AuthService', () => {
   });
 
   describe('login', () => {
-    it('debería retornar un access_token y los datos básicos del usuario', () => {
+    it('debería retornar un access_token y los datos básicos del usuario, incluyendo direcciones y puntos', () => {
       const mockUser = {
         id: '1',
         full_name: 'Test',
         email: 'test@test.com',
         role: 'user',
+        phone: '3171234567',
+        points: 50,
+        addresses: [{ id: 'addr-1', title: 'Casa' }],
       };
 
       mockJwtService.sign.mockReturnValue('un_token_jwt_muy_seguro');
@@ -116,17 +119,26 @@ describe('AuthService', () => {
 
       expect(result).toEqual({
         access_token: 'un_token_jwt_muy_seguro',
-        user: mockUser,
+        user: {
+          id: mockUser.id,
+          full_name: mockUser.full_name,
+          email: mockUser.email,
+          role: mockUser.role,
+          phone: mockUser.phone,
+          points: mockUser.points,
+          addresses: mockUser.addresses,
+        },
       });
     });
   });
 
   describe('register', () => {
-    it('debería crear un usuario y loguearlo automáticamente sin devolver la contraseña', async () => {
+    it('debería crear un usuario y loguearlo automáticamente sin devolver la contraseña e inicializando puntos y direcciones', async () => {
       const userData = {
         full_name: 'Test',
         email: 'test@test.com',
         password: '123',
+        phone: '3171234567',
       };
 
       const mockCreatedUser = { id: '1', ...userData, role: 'user' };
@@ -145,6 +157,9 @@ describe('AuthService', () => {
         full_name: mockCreatedUser.full_name,
         email: mockCreatedUser.email,
         role: mockCreatedUser.role,
+        phone: mockCreatedUser.phone,
+        points: 0, // Por defecto en login() si no viene en el usuario
+        addresses: [], // Modificado explícitamente en register() de auth.service.ts
       });
       expect((result.user as any).password).toBeUndefined();
     });
