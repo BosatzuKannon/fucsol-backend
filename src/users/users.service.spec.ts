@@ -127,7 +127,10 @@ describe('UsersService', () => {
       const result = await service.findByEmail('test@test.com');
 
       expect(mockSupabaseClient.from).toHaveBeenCalledWith('users');
-      expect(mockSupabaseQueryBuilder.select).toHaveBeenCalledWith('*');
+      // CORRECCIÓN: Ahora espera el string con el JOIN
+      expect(mockSupabaseQueryBuilder.select).toHaveBeenCalledWith(
+        '*, addresses(*)',
+      );
       expect(mockSupabaseQueryBuilder.eq).toHaveBeenCalledWith(
         'email',
         'test@test.com',
@@ -174,8 +177,9 @@ describe('UsersService', () => {
       const result = await service.findById('1');
 
       expect(mockSupabaseClient.from).toHaveBeenCalledWith('users');
+      // CORRECCIÓN: Ahora espera el string con el JOIN
       expect(mockSupabaseQueryBuilder.select).toHaveBeenCalledWith(
-        'id, full_name, email, phone, role, created_at',
+        'id, full_name, email, phone, role, created_at, addresses(*)',
       );
       expect(mockSupabaseQueryBuilder.eq).toHaveBeenCalledWith('id', '1');
       expect(result).toEqual(mockUser);
