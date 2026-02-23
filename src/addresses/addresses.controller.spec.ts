@@ -39,7 +39,7 @@ describe('AddressesController', () => {
         address_line: 'Calle Falsa 123',
         is_default: true,
       };
-      const req = { user: { sub: 'user-123' } }; // Simulamos el request con el JWT decodificado
+      const req = { user: { id: 'user-123' } };
       const expectedResult = { id: 'addr-1', ...createDto };
 
       mockAddressesService.create.mockResolvedValue(expectedResult);
@@ -53,7 +53,7 @@ describe('AddressesController', () => {
 
   describe('remove', () => {
     it('debería llamar al servicio para eliminar una dirección', async () => {
-      const req = { user: { sub: 'user-123' } };
+      const req = { user: { id: 'user-123' } };
       const addressId = 'addr-1';
       const expectedResult = { message: 'Dirección eliminada correctamente' };
 

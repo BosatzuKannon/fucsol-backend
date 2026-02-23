@@ -18,11 +18,14 @@ export class AddressesController {
 
   @Post()
   create(@Request() req, @Body() createAddressDto: CreateAddressDto) {
-    return this.addressesService.create(req.user.sub, createAddressDto);
+    return this.addressesService.create(
+      req.user.id as string,
+      createAddressDto,
+    );
   }
 
   @Delete(':id')
   remove(@Request() req, @Param('id') addressId: string) {
-    return this.addressesService.remove(req.user.sub, addressId);
+    return this.addressesService.remove(req.user.id as string, addressId);
   }
 }
