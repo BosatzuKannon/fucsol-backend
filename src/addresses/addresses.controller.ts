@@ -4,6 +4,7 @@ import {
   Body,
   Delete,
   Param,
+  Patch,
   UseGuards,
   Request,
 } from '@nestjs/common';
@@ -27,5 +28,13 @@ export class AddressesController {
   @Delete(':id')
   remove(@Request() req, @Param('id') addressId: string) {
     return this.addressesService.remove(req.user.id as string, addressId);
+  }
+
+  @Patch(':id/default')
+  markAsDefault(@Request() req, @Param('id') addressId: string) {
+    return this.addressesService.markAsDefault(
+      req.user.id as string,
+      addressId,
+    );
   }
 }

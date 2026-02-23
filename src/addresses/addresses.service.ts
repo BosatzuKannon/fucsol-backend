@@ -31,6 +31,8 @@ export class AddressesService {
             title: createAddressDto.title,
             address_line: createAddressDto.address_line,
             reference: createAddressDto.reference,
+            city: createAddressDto.city || 'Pasto',
+            department: createAddressDto.department || 'Nariño',
             is_default: createAddressDto.is_default || false,
           },
         ])
@@ -38,8 +40,6 @@ export class AddressesService {
         .single();
 
       if (error) throw error;
-
-      this.logger.log(`Nueva dirección creada para usuario: ${userId}`);
       return data;
     } catch (error) {
       this.logger.error(
@@ -61,10 +61,6 @@ export class AddressesService {
         .eq('user_id', userId);
 
       if (error) throw error;
-
-      this.logger.log(
-        `Dirección ${addressId} eliminada por el usuario: ${userId}`,
-      );
       return { message: 'Dirección eliminada correctamente' };
     } catch (error) {
       this.logger.error(
@@ -73,6 +69,36 @@ export class AddressesService {
       );
       throw new InternalServerErrorException(
         'No se pudo eliminar la dirección',
+      );
+    }
+  }
+
+  async markAsDefault(userId: string, addressId: string) {
+    const supabase = this.supabaseService.getClient();
+
+    try {
+      await supabase
+        .from('addresses')
+        .update({ is_default: false })
+        .eq('user_id', userId);
+
+      const { data, error } = await supabase
+        .from('addresses')
+        .update({ is_default: true })
+        .eq('id', addressId)
+        .eq('user_id', userId)
+        .select()
+        .single();
+
+      if (error) throw error;
+      return data;
+    } catch (error) {
+      this.logger.error(
+        `Error al marcar como predeterminada: ${error.message}`,
+        error.stack,
+      );
+      throw new InternalServerErrorException(
+        'No se pudo actualizar la dirección principal',
       );
     }
   }

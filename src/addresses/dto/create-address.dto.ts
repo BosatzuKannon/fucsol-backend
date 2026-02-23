@@ -13,6 +13,14 @@ export class CreateAddressDto {
   @IsOptional()
   reference?: string;
 
+  @IsString()
+  @IsOptional()
+  city?: string;
+
+  @IsString()
+  @IsOptional()
+  department?: string;
+
   @IsBoolean()
   @IsOptional()
   is_default?: boolean;
